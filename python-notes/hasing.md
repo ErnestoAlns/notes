@@ -31,7 +31,7 @@ def check_password(password: str, hashed_password: str) -> bool:
         password_bytes = password.encode('utf-8')
         hashed_bytes = hashed_password.encode('utf-8')
         
-        # 2. 🚨 La magia de bcrypt: Compara el hash con la contraseña.
+        # 2. La magia de bcrypt: Compara el hash con la contraseña.
         #    bcrypt extrae el salt del hash_almacenado para hacer la verificación.
         return bcrypt.checkpw(password_bytes, hashed_bytes)
     except ValueError:

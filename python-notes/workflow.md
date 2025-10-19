@@ -41,3 +41,54 @@ Este flujo aplica la arquitectura de tres capas (Rutas, Servicio, Repositorio) p
 | **SQL** | `cursor.execute(INSERT INTO users ...)` | Contiene **TODAS** las funciones que ejecutan código SQL. No conoce la lógica de *hashing*. |
 | **Mapeo** | `UserModel.model_validate(sql_result)` | Convierte el resultado crudo de MySQL (tupla/diccionario) en el objeto **Modelo de Dominio** (`UserModel`). |
 | **Errores DB** | `raise ValueError("El nombre de usuario ya está en uso.")` | Traduce errores de SQL específicos (ej., `UNIQUE constraint failed`) en excepciones de Python claras para el Servicio. |
+
+
+
+---
+
+## 4. Reglas generales de sintaxis
+Para nombrar funciones y variables en python se usla el estandar **PEP-8**
+
+```python
+# Para Variables y funciones se usa: snake_case
+
+user_name = 'Luis Ernesto'
+total_price = 1000
+
+def get_user_name():
+    return user_name
+
+def calculate_total_price():
+    return total_price
+
+
+# Para clases se usa UpperCammelCase 
+class UserREgister():
+    pass
+
+class UserModel():
+    pass
+
+```
+
+Resumen
+
+| Elemento              | Estilo recomendado           | Ejemplo                     |
+|------------------------|-------------------------------|-----------------------------|
+| Variables              | `snake_case`                  | `total_price`               |
+| Funciones              | `snake_case`                  | `get_user_name()`           |
+| Clases / Excepciones   | `PascalCase` (Upper Camel)    | `UserProfile`               |
+| Constantes             | `UPPER_CASE`                  | `MAX_RETRIES`               |
+| Archivos / módulos     | `snake_case`                  | `data_loader.py`            |
+| Paquetes               | `lowercase`                   | `utils/`                    |
+| camelCase              |  no recomendado en Python     |                             |
+
+##  Notas adicionales
+
+- `snake_case` es la convención estándar para funciones y variables en Python.
+- `PascalCase` se usa exclusivamente para clases y excepciones.
+- Las constantes se escriben en mayúsculas con `_` para diferenciarlas de variables.
+- Los archivos y módulos deben ser cortos, claros y en minúsculas.
+- Evita usar `camelCase` salvo que integres con APIs externas que ya lo usen.
+- Usa herramientas como **Black** o **Flake8** para mantener un estilo consistente automáticamente.
+

@@ -1,0 +1,138 @@
+% IEEE-style LaTeX paper (simplified design)
+\documentclass[conference]{IEEEtran}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath, amsfonts}
+%\usepackage{listings}
+%\usepackage{hyperref}
+%\usepackage{graphicx}
+%\usepackage{cite}
+%
+%
+\title{Rust y Álgebra Lineal: Un Enfoque Moderno para el Manejo de Matrices}
+
+\author{
+  \IEEEauthorblockN{Análisis y Desarrollo con Rust}
+  \IEEEauthorblockA{}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+El álgebra lineal constituye uno de los pilares fundamentales en computación científica, gráficos computacionales, simulación física y aprendizaje automático. En programación, trabajar con matrices y vectores es esencial para modelar sistemas, transformar datos y representar operaciones matemáticas complejas. Rust, un lenguaje moderno orientado a la seguridad y el rendimiento, proporciona herramientas de bajo y alto nivel para construir estructuras matriciales sin comprometer la seguridad de memoria. Este documento presenta una introducción conceptual al álgebra lineal aplicada en Rust, describiendo cómo diseñar estructuras matriciales seguras y eficientes, y mostrando ejemplos idiomáticos de operaciones fundamentales.
+\end{abstract}
+
+\section{Introducción}
+El álgebra lineal en programación requiere estructuras capaces de representar arreglos multidimensionales, vectores y transformaciones. En lenguajes tradicionales como C, las matrices suelen implementarse mediante arreglos bidimensionales o punteros dobles. Sin embargo, estos enfoques implican riesgos relacionados con la gestión manual de memoria.
+
+Rust introduce un modelo seguro basado en:\\
+1) \textbf{Propiedad (Ownership)}\\
+2) \textbf{Préstamos (Borrowing)}\\
+3) \textbf{Verificaciones en tiempo de compilación (Compile-time checks)}\\
+
+Estos mecanismos permiten representar matrices mediante estructuras (\textit{structs}), arreglos estáticos (\textit{arrays}) y vectores dinámicos (\texttt{Vec<T>}) de forma segura y eficiente.
+
+Estructuras como \texttt{struct}, combinadas con el sistema de tipos fuerte del lenguaje, permiten abstraer matrices de tamaño fijo, mientras que tipos dinámicos como \texttt{Vec<Vec<f64>>} permiten operar con matrices de tamaño variable. En este documento se describen ambos enfoques.
+
+\section{Representación de Matrices en Rust}
+Existen dos aproximaciones principales para manejar matrices en Rust:\\
+\textbf{1) Matrices de tamaño fijo:} utilizando \texttt{[[T; N]; M]}\\
+\textbf{2) Matrices dinámicas:} utilizando \texttt{Vec<Vec<T>>}
+
+La primera opción se utiliza comúnmente en escenarios donde el tamaño es conocido en tiempo de compilación (por ejemplo, transformaciones 3x3 o 4x4 en gráficos). La segunda es apropiada para aplicaciones más generales.
+
+\subsection{Ejemplo de matriz de tamaño fijo}
+\begin{lstlisting}
+struct Matrix3x3 {
+    data: [[f64; 3]; 3],
+}
+\end{lstlisting}
+
+Esta estructura garantiza seguridad en memoria y permite indexación como en C, pero con checado de límites.
+
+\subsection{Ejemplo de matriz dinámica}
+\begin{lstlisting}
+struct Matrix {
+    rows: usize,
+    cols: usize,
+    data: Vec<Vec<f64>>,
+}
+\end{lstlisting}
+
+Esto permite crear matrices de cualquier dimensión, validando durante la construcción que todos los vectores internos tienen la misma longitud.
+
+\section{Operaciones Básicas}
+A continuación se presentan ejemplos idiomáticos de Rust para operaciones fundamentales en álgebra lineal.
+
+\subsection{Suma de matrices}
+\begin{lstlisting}
+impl Matrix3x3 {
+    fn add(&self, other: &Self) -> Self {
+        let mut result = [[0.0; 3]; 3];
+        for i in 0..3 {
+            for j in 0..3 {
+                result[i][j] = self.data[i][j] + other.data[i][j];
+            }
+        }
+        Self { data: result }
+    }
+}
+\end{lstlisting}
+
+La suma de matrices requiere que ambas matrices tengan las mismas dimensiones, lo cual el sistema de tipos garantiza al usar matrices fijas.
+
+\subsection{Multiplicación escalar}
+\begin{lstlisting}
+fn scalar_mul(&self, k: f64) -> Self {
+    let mut result = [[0.0; 3]; 3];
+    for i in 0..3 {
+        for j in 0..3 {
+            result[i][j] = self.data[i][j] * k;
+        }
+    }
+    Self { data: result }
+}
+\end{lstlisting}
+
+\subsection{Multiplicación matricial}
+\begin{lstlisting}
+fn mul(&self, other: &Self) -> Self {
+    let mut result = [[0.0; 3]; 3];
+    for i in 0..3 {
+        for j in 0..3 {
+            for k in 0..3 {
+                result[i][j] += self.data[i][k] * other.data[k][j];
+            }
+        }
+    }
+    Self { data: result }
+}
+\end{lstlisting}
+
+La multiplicación matricial es un ejemplo clásico de cómo Rust permite expresar algoritmos matemáticos de manera clara, manteniendo seguridad en el acceso a índices.
+
+\section{Consideraciones y Buenas Prácticas}
+\begin{itemize}
+    \item Encapsular siempre la representación interna usando \texttt{struct}.
+    \item Evitar exponer acceso directo al array interno; usar funciones \texttt{get} y \texttt{set}.
+    \item Usar \texttt{Result<T, E>} al trabajar con matrices dinámicas para capturar errores de dimensión.
+    \item Apoyarse en iteradores cuando sea posible para mejorar legibilidad y eficiencia.
+    \item Consultar el Rust Book para fundamentos en: Ownership (Cap. 4), Structs (Cap. 5), Enums (Cap. 6) y Vectores (Cap. 8).
+\end{itemize}
+
+\section{Conclusión}
+Rust ofrece herramientas modernas para implementar álgebra lineal de manera segura, expresiva y eficiente. El uso de matrices como arrays fijos garantiza seguridad en tiempo de compilación, mientras que las matrices dinámicas mediante \texttt{Vec} ofrecen flexibilidad. Su sistema de tipos fuerte y sus garantías de memoria convierten a Rust en una excelente opción para aplicaciones científicas, gráficas y de alto rendimiento.
+
+\section*{Referencias}
+\begin{thebibliography}{1}
+
+\bibitem{rustbook}
+Steve Klabnik y Carol Nichols, ``The Rust Programming Language'', Disponible en: \url{https://doc.rust-lang.org/book/}
+
+\bibitem{ruststd}
+Rust Standard Library Documentation, \url{https://doc.rust-lang.org/std/}
+
+\end{thebibliography}
+
+\end{document}
+

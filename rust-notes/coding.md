@@ -94,3 +94,23 @@ La sintaxis que usaste en la pregunta te obliga and entender la diferencia entre
 2. `Sting:`
  - Es un tipo crecible, mutable y con propiedad (Owned) que almacena su contenido en el Heap
  - Es lo que necesitas si vas a modificar la cadena (ej. añadiendo texto o leyendo entrada de usuario).
+
+ >[!note]
+*recuerda que los metodos, read_line() y prase() retornan un* `Result`
+
+## Errors en funciones externas
+las funciones que pueden fallar al recuperar datos introducidos
+por el usario es deic las funciones como `read_line` o `parse()`
+en rust derivan distinots tipos de errores, como lo seria un 
+error estandar: `std::error::Error` o un error de `parseIntError`
+en funciones que tengan ambos tipos de errores, por ejempo una
+funcion que pida mediante un read_line un numero al usario es mejor 
+usar `Box<dyn std::error::Error>`
+ejemplo: 
+```rust
+use std::io;
+use std::error::Error;
+
+fn get_from_user() -> Result<i32, Box<dyn Error>>
+```
+

@@ -1,0 +1,32 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2025.11.14)  14 NOV 2025 15:55
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./matrix.tex
+(matrix.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-10-24>
+
+! LaTeX Error: File `IEEEtran.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.11 \title
+           {Rust y Álgebra Lineal: Un Enfoque Moderno para el Manejo de Mat...
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 20 strings out of 469811
+ 464 string characters out of 2469067
+ 433733 words of memory out of 3000000
+ 28756 multiletter control sequences out of 15000+600000
+ 627721 words of font info for 40 fonts, out of 8000000 for 9000
+ 0 hyphenation exceptions out of 8191
+ 19i,0n,29p,125b,17s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!

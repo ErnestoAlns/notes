@@ -1,30 +1,52 @@
-## Estructuras en rust
+# Estructuras en rust
 En rust no existe propiamente la programacion
 orentada objetos, pero existen funciones que 
 permiten implementar estas de un modo mas 
 estructurado.
 
-### struct
-
+## struct
 ```rust
 struct User {
-    id: u32,
-    name: String,
-    password: String,
-    status: bool,=
+    active: bool,
+    username: String,
+    mail: String,
+    sign_in: u64,
 }
-// Para instanciar el User.
 
-let user = User {
-    id: 1,
-    name: String::from("Ernesto"),
-    password: String::from("luis9139"),
-    status: true,
+fn main() {
+    let user = user_builder(name, mail);
+
+    let user1 = User {
+        mail: String::from("usuario2@gmail.com"),
+        //ESTA NOTACION INDICA QUE TODOS LOS VALORES DE USER1 SERAN IGUAL A USER
+        ..user
+    };
 }
-println!("User; ", user.name);
+
+fn user_builder(name: String, mail: String) -> User {
+    User {
+        active: true,
+        username: name, // alternative-> username,
+        mail: mail,     // alternative-> mail,
+        sign_in: 1
+    }
+}
+```
+### structs de tuplas
+```rust
+//las tupas como estructuras riven para idomalisar rango se valores.
+struct ColorRGB(i32, i32, i32);// -> (R, G, B)
+
+struct Point(i32, i32, i32);// -> (x, y, z)
+
+fn main() {
+    let black = ColorRGB(0, 0, 0);
+    let origin = Point(0, 0, 0);
+}
 ```
 
-### Enum
+---
+## Enum
 Este es el rubro que aun no comprendo del todo,1
 es un "diccionario de estados", en si define
 un tipo que puede ser uno de varios valores
@@ -45,7 +67,7 @@ match estado {
 
 ```
 
-### impl
+## impl
 La implemetacion es parte fundamental de las estructuras permite asociar funciones (metodos)
 a las mismas, para poder instaciarlas de manera segura.
 ```rust
